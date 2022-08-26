@@ -1,38 +1,56 @@
-// function waithide() {
-//     const objeto = document.querySelector(".sidebar");
-//     objeto.style.opacity = '0';
-//     setTimeout(function removethis() {
-//         objeto.style.display = 'none';
-//     }, 300);
-// }
+//declaração de variáveis===========================================
 
-function rolagemAutomática() {
+let usuario = "";
+let para = "";
+let texto = "";
+let tipo = "";
 
-    const elementoQueQueroQueApareca = document.querySelector('.console li:last-child');
+//código das funções================================================
+function loginUsuario() {
 
-    elementoQueQueroQueApareca.scrollIntoView();
+    usuario = prompt("Qual o seu nome?")
 
+    const objetoUsuario = {
+        name: usuario
+    };
+    const promessa = axios.post("https://mock-api.driven.com.br/api/v6/uol/participants ", objetoUsuario);
+    promessa.then(loginCorreto);
+    promessa.catch(loginErro);
 }
 
-atualizarMensagem();
+function loginCorreto() {
+    console.log("Login OK");
+
+    buscarMensagens();
+}
+
+function loginErro() {
+    console.log("Login ERRO");
+    loginUsuario();
+}
 
 function atualizarMensagem() {
 
-    setInterval(buscarMensagens, 3000);
+    setInterval(buscarMensagens, 1000);
 
 }
-
-buscarMensagens();
 
 function buscarMensagens() {
 
     const promessa = axios.get("https://mock-api.driven.com.br/api/v6/uol/messages");
     promessa.then(renderizarMensagens);
-    promessa.catch(telaErro);
+    promessa.catch(buscarMensagensErro);
+
+}
+
+function buscarMensagensErro(erro) {
+
+    console.log(erro.response.status);
 
 }
 
 function renderizarMensagens(resposta) {
+
     let consoleMensagens = document.querySelector(".console");
     consoleMensagens.innerHTML = ``;
 
@@ -75,8 +93,66 @@ function renderizarMensagens(resposta) {
     rolagemAutomática();
 }
 
-function telaErro(erro) {
+function rolagemAutomática() {
 
-    console.log(erro.response.status);
+    const elementoQueQueroQueApareca = document.querySelector('.console li:last-child');
+
+    elementoQueQueroQueApareca.scrollIntoView();
 
 }
+
+function manterSeLogado() {
+    const objetoUsuario = {
+        name: usuario
+    };
+
+    const promessa = axios.post("https://mock-api.driven.com.br/api/v6/uol/status", objetoUsuario);
+    promessa.then(conexaoAtualizada);
+    promessa.catch(conexaoPerdida);
+}
+
+function conexaoAtualizada(resposta) {
+    console.log("Conexão Atualizada");
+}
+
+function conexaoPerdida(resposta) {
+    console.log("Conexão Perdida");
+}
+
+function enviaMensagem() {
+
+    const elementoMensagem = document.querySelector('#digite');
+    console.log(elementoMensagem.value);
+    const objetoMensagem = {
+        from: usuario,
+        to: "Todos",
+        text: elementoMensagem.value,
+        type: "message",
+    }
+    const promessa = axios.post("https://mock-api.driven.com.br/api/v6/uol/messages", objetoMensagem);
+    promessa.then(enviaMensagemCorreto);
+    promessa.catch(enviarMensagemErro);
+    elementoMensagem.value = '';
+}
+
+function enviaMensagemCorreto(resposta) {
+    console.log("Envio ok!");
+}
+
+function enviarMensagemErro(erro) {
+    console.log("Envio erro!")
+}
+
+function envioEnter(i) {
+    if (i.key === "Enter") {
+        enviaMensagem()
+    }
+}
+//chamando funções =================================================
+loginUsuario();
+atualizarMensagem();
+setInterval(manterSeLogado, 5000);
+
+
+//ações=============================================================
+document.addEventListener("keypress", envioEnter);
