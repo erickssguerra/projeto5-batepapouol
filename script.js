@@ -149,9 +149,9 @@ function envioEnter(tecla) {
     }
 }
 //chamando funções =================================================
-// loginUsuario();
-// atualizarMensagem();
-// setInterval(manterSeLogado, 5000);
+loginUsuario();
+atualizarMensagem();
+setInterval(manterSeLogado, 5000);
 
 //ações ============================================================
-// document.addEventListener("keypress", envioEnter);
+document.addEventListener("keypress", envioEnter);
