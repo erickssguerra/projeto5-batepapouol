@@ -1,11 +1,11 @@
-//declaração de variáveis===========================================
+//declaração de variáveis ==========================================
 
 let usuario = "";
 let para = "";
 let texto = "";
 let tipo = "";
 
-//código das funções================================================
+//código das funções ===============================================
 function loginUsuario() {
 
     usuario = prompt("Qual o seu nome?")
@@ -97,7 +97,7 @@ function rolagemAutomática() {
 
     const elementoQueQueroQueApareca = document.querySelector('.console li:last-child');
 
-    elementoQueQueroQueApareca.scrollIntoView();
+    elementoQueQueroQueApareca.scrollIntoView({ behavior: "smooth" });
 
 }
 
@@ -143,16 +143,15 @@ function enviarMensagemErro(erro) {
     console.log("Envio erro!")
 }
 
-function envioEnter(i) {
-    if (i.key === "Enter") {
+function envioEnter(tecla) {
+    if (tecla.key === "Enter") {
         enviaMensagem()
     }
 }
 //chamando funções =================================================
-loginUsuario();
-atualizarMensagem();
-setInterval(manterSeLogado, 5000);
+// loginUsuario();
+// atualizarMensagem();
+// setInterval(manterSeLogado, 5000);
 
-
-//ações=============================================================
-document.addEventListener("keypress", envioEnter);
+//ações ============================================================
+// document.addEventListener("keypress", envioEnter);
